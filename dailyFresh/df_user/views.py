@@ -2,6 +2,7 @@
 from django.shortcuts import render,redirect
 from .models import *
 from hashlib import sha1
+from django.http import JsonResponse,HttpResponse,HttpResponseRedirect
 
 
 def register(request):
@@ -21,9 +22,9 @@ def register_handle(request):
         # 使用sha1加密
         s1 = sha1()
         s1.update(upwd)
-        upwd3 = s1.hexdigest().decode('utf-8')
+        upwd3 = s1.hexdigest()
 
-        user.upwd = upwd
+        user.upwd = upwd3
         user.uemail = uemail
         user.ushou = ''
         user.uaddress = ''
@@ -35,6 +36,51 @@ def register_handle(request):
         return redirect('/user/register/')
 
 
-def login(request):
+def name_exit(request, rname):
+    count = userInfo.objects.filter(uname=rname).count()
 
-    return render(request, 'df_user/login.html')
+    return JsonResponse({'data': count})
+
+
+def login(request):
+    name = request.COOKIES.get('name')
+    context = {'error_name': 0, 'error_pwd': 0, 'name': name, 'pwd': ''}
+    return render(request, 'df_user/login.html', context)
+
+
+def login_handle(request):
+    post = request.POST
+    username = post.get('username')
+    pwd = post.get('pwd')
+    checkbox = post.get('checkbox', 0)
+    s1 = sha1()
+    s1.update(pwd)
+    pwd1 = s1.hexdigest()
+    user = userInfo.objects.filter(uname=username)
+
+    if len(user) == 1:
+        red = HttpResponseRedirect('/user/info/')
+
+        if pwd1 == user[0].upwd:
+            if checkbox == 1:
+                red.set_cookie('name', username)
+            else:
+                red.set_cookie('name', '', max_age=-1)
+
+            request.session['user_id'] = user[0].id
+            request.session['user_name'] = user[0].uname
+            return red
+        else:
+            context = {'error_name': 0, 'error_pwd': 1, 'name': username, 'pwd': pwd}
+            return render(request, 'df_user/login.html', context)
+
+    else:
+        context = {'error_name': 1, 'error_pwd': 0, 'name': username, 'pwd': pwd}
+        return render(request, 'df_user/login.html', context)
+
+
+def info(request):
+    context = {}
+    return render(request, 'df_user/user_center_info.html', context)
+
+
