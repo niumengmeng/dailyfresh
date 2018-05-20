@@ -80,7 +80,30 @@ def login_handle(request):
 
 
 def info(request):
-    context = {}
+    uid = request.session['user_id']
+    user = userInfo.objects.filter(id=uid)
+    context = {'uname': user[0].uname, 'uphone': user[0].uphone, 'uaddress': user[0].uaddress}
     return render(request, 'df_user/user_center_info.html', context)
 
 
+def order(request):
+    context = {}
+    return render(request, 'df_user/user_center_order.html', context)
+
+
+def site(request):
+    user = userInfo.objects.filter(id=request.session['user_id'])
+    context = {'address': user[0].uaddress}
+    return render(request, 'df_user/user_center_site.html', context)
+
+
+def site_handle(request):
+    user = userInfo.objects.get(id=request.session['user_id'])
+
+    post = request.POST
+    user.ushou = post.get('site_name')
+    user.uaddress = post.get('site_address')
+    user.uyoubian = post.get('site_youbian')
+    user.uphone = post.get('site_phone')
+    user.save()
+    return redirect('/user/site/')

@@ -7,6 +7,9 @@ urlpatterns = [
     url(r'^login/$', views.login, name='login'),
     url(r'^login_handle/$', views.login_handle, name='login_handle'),
     url(r'^info/$', views.info, name='info'),
+    url(r'^order/$', views.order, name='order'),
+    url(r'^site/$', views.site, name='site'),
+    url(r'^site_handle/$', views.site_handle, name='site_handle'),
 
 
 ]

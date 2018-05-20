@@ -15,9 +15,8 @@
 	        $('.user_error').html('密码错误').show()
 		}
 		$('.name_input').blur(function () {
+ 			var name = $(this).val();
 
-			var name = $(this).val();
-			
 			if(name.length==0){
 			    $('.user_error').html('请输入用户名').show();
 			    error_names = false;
