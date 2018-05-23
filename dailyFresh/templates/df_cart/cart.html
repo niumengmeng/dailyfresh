@@ -51,7 +51,7 @@
 		<li class="col01"><input type="checkbox" name="" checked="" id="check_all"></li>
 		<li class="col02" id="all">全选</li>
 		<li class="col03">合计(不含运费)：<span>¥</span><em id="total_price">42.60</em><br>共计<b id="show_counts">2</b>件商品</li>
-		<li class="col04"><a href="/static/place_order.html">去结算</a></li>
+		<li class="col04"><a href="/order/">去结算</a></li>
 	</ul>
 <script>
 	<!--异步请求-->
@@ -73,7 +73,7 @@
 		var price = parseFloat($('#price_{{i.id}}').text());
 		var num = parseFloat($('#num_{{i.id}}').val());
 		var total = price * num;
-		console.log(total);
+
 		$('#total_{{i.id}} ').text(total.toFixed(2)+'元');
 		{%endfor%}
 	}
@@ -90,13 +90,14 @@
 	        var total = $('#total_{{i.id}} ').text();
 			totalPrice+=parseFloat(total);
 			count += 1;
-			console.log(count);
+
 
 		}
 		{%endfor%}
 
 		$('#show_counts').text(count);
 		$('#total_price').text(totalPrice.toFixed(2))
+
 	}
 
 	//添加
@@ -169,6 +170,9 @@
 				if (data.ok==1){
 					$('ul').remove('#'+cart_id)
  					total();
+					var count = parseInt($('#show_count').text());
+					$('#show_count').text(count-1)
+
 				}else {
 					alert('删除失败')
 				}

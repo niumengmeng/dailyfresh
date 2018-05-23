@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'df_goods',
     'tinymce',
     'df_cart',
+    'df_order',
 )
 
 MIDDLEWARE_CLASSES = (
