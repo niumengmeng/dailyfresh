@@ -1,0 +1,183 @@
+{%extends 'base.html'%}
+{%block title%}-商品详情{%endblock title%}
+{%block javascript%}
+<script type="text/javascript" src="/static/js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript">
+		function adds(){
+			    var numShow = parseFloat($('#num_show').val());
+			    $('#num_show').val(numShow+1);
+				$('#num_show').blur();
+
+			}
+		function minus(){
+			    var numShow = parseFloat($('#num_show').val());
+			    if (num <= 1 ) {
+                    num = 1
+                }else {
+					$('#num_show').val(numShow-1);
+					$('#num_show').blur();
+
+				}
+
+			}
+		$(function () {
+				$('#num_show').blur(function () {
+					num = parseFloat($(this).val());
+
+					total = parseFloat($('.prize').text());
+					var price = num*total;
+					$('#total').text(price.toFixed(2)+'元')
+
+
+                })
+
+
+
+
+
+        });
+
+	</script>
+{%endblock javascript%}
+
+{%block body%}
+
+
+	<div class="search_bar clearfix">
+		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="search_con fl">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>
+		<div class="guest_cart fr">
+			<a href="/cart/" class="cart_name fl">我的购物车</a>
+			<div class="goods_count fl" id="show_count">0</div>
+		</div>
+	</div>
+
+	<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>	
+				<span></span>			
+				<ul class="subnav">
+					<li><a href="/list_1_1_1/" class="fruit">{{type0.ttitle}}</a></li>
+					<li><a href="/list_2_1_1/" class="seafood">{{type1.ttitle}}</a></li>
+					<li><a href="/list_3_1_1/" class="meet">{{type2.ttitle}}</a></li>
+					<li><a href="/list_4_1_1/" class="egg">{{type3.ttitle}}</a></li>
+					<li><a href="/list_5_1_1/" class="vegetables">{{type4.ttitle}}</a></li>
+					<li><a href="/list_6_1_1/" class="ice">{{type5.ttitle}}</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="breadcrumb">
+		<a href="/list_1_1_1/">全部分类</a>
+		<span>></span>
+		<a href="/list_1_1_1/">{{typeinfo.ttitle}}</a>
+		<span>></span>
+		<a href="#">商品详情</a>
+	</div>
+
+	<div class="goods_detail_con clearfix">
+		<div class="goods_detail_pic fl"><img src="/static/{{goods.gpic}}"></div>
+
+		<div class="goods_detail_list fr">
+			<h3>{{goods.gtitle}}</h3>
+			<p>{{goods.gjianjie}}</p>
+			<div class="prize_bar">
+				<span class="show_pirze">¥<em class="prize">{{goods.gprice}}</em></span>
+				<span class="show_unit">单  位：{{goods.gunit}}</span>
+			</div>
+			<div class="goods_num clearfix">
+				<div class="num_name fl">数 量：</div>
+				<div class="num_add fl">
+					<input type="text" class="num_show fl" value="1" id="num_show">
+					<a href="javascript:adds()" class="add fr" >+</a>
+					<a href="javascript:minus()" class="minus fr" >-</a>
+				</div> 
+			</div>
+			<div class="total">总价：<em id="total">{{goods.gprice}}元</em></div>
+			<div class="operate_btn">
+				<a href="javascript:;" class="buy_btn">立即购买</a>
+				<a href="javascript:;" class="add_cart" id="add_cart">加入购物车</a>				
+			</div>
+		</div>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+					{%for i in news%}
+					<li>
+						<a href="/detail_{{i.gtype_id}}_{{i.id}}/"><img src="/static/{{i.gpic}}"></a>
+						<h4><a href="#">{{i.gtitle}}</a></h4>
+						<div class="prize">￥{{i.gprice}}</div>
+					</li>
+					{%endfor%}
+
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<ul class="detail_tab clearfix">
+				<li class="active">商品介绍</li>
+				<li>评论</li>
+			</ul>
+
+			<div class="tab_content">
+				<dl>
+					<dt>商品详情：</dt>
+					<dd>{{goods.gcontent}} </dd>
+				</dl>
+			</div>
+
+		</div>
+	</div>
+	<div class="add_jump"></div>
+	<script type="text/javascript">
+
+		$.get('/cart/cart_num', function (data) {
+			$('#show_count').html(data.count)
+        });
+
+		var $add_x = $('#add_cart').offset().top;
+		var $add_y = $('#add_cart').offset().left;
+
+		var $to_x = $('#show_count').offset().top;
+		var $to_y = $('#show_count').offset().left;
+		console.log('hahah1')
+
+		$(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
+		console.log('hahah2')
+		$('#add_cart').click(function(){
+
+			$(".add_jump").stop().animate({
+				'left': $to_y+7,
+				'top': $to_x+7},
+				"fast", function() {
+					$(".add_jump").fadeOut('fast',function(){
+					    $(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
+					    $(".add_jump").css({'left':$add_y+80,'top':$add_x+10,'display':'block'})
+					     $.get('/cart/add_'+{{goods.id}}+'_'+'1'+'/', function (data) {
+							var count = data.count;
+							$('#show_count').html(count);
+           				 });
+
+					});
+
+			});
+		})
+	</script>
+	{%endblock body%}

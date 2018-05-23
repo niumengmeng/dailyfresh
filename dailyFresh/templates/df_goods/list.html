@@ -1,0 +1,127 @@
+{%extends 'base.html'%}
+{%block title%}-商品列表{%endblock title%}
+{%block body%}
+	<div class="search_bar clearfix">
+		<a href="/" class="logo fl"><img src="/static/images/logo.png"></a>
+		<div class="search_con fl">
+			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
+			<input type="button" class="input_btn fr" name="" value="搜索">
+		</div>
+		<div class="guest_cart fr">
+			<a href="/cart/" class="cart_name fl" >我的购物车</a>
+			<div class="goods_count fl" id="show_count">0</div>
+		</div>
+	</div>
+
+	<div class="navbar_con">
+		<div class="navbar clearfix">
+			<div class="subnav_con fl">
+				<h1>全部商品分类</h1>	
+				<span></span>			
+				<ul class="subnav">
+					<li><a href="/list_1_1_1/" class="fruit">{{type0.ttitle}}</a></li>
+					<li><a href="/list_2_1_1/" class="seafood">{{type1.ttitle}}</a></li>
+					<li><a href="/list_3_1_1/" class="meet">{{type2.ttitle}}</a></li>
+					<li><a href="/list_4_1_1/" class="egg">{{type3.ttitle}}</a></li>
+					<li><a href="/list_5_1_1/" class="vegetables">{{type4.ttitle}}</a></li>
+					<li><a href="/list_6_1_1/" class="ice">{{type5.ttitle}}</a></li>
+				</ul>
+			</div>
+			<ul class="navlist fl">
+				<li><a href="/">首页</a></li>
+				<li class="interval">|</li>
+				<li><a href="">手机生鲜</a></li>
+				<li class="interval">|</li>
+				<li><a href="">抽奖</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="breadcrumb">
+		<a href="#">全部分类</a>
+		<span>></span>
+		<a href="#">{{typeinfo.ttitle}}</a>
+	</div>
+
+	<div class="main_wrap clearfix">
+		<div class="l_wrap fl clearfix">
+			<div class="new_goods">
+				<h3>新品推荐</h3>
+				<ul>
+					{% for i in news%}
+					<li>
+						<a href="#"><img src="/static/{{i.gpic}}"></a>
+						<h4><a href="#">{{i.gtitle}}</a></h4>
+						<div class="prize">￥{{i.gprice}}</div>
+					</li>
+					{%endfor%}
+				</ul>
+			</div>
+		</div>
+
+		<div class="r_wrap fr clearfix">
+			<div class="sort_bar">
+				<a href="/list_{{tid}}_1_1/"
+				   {% if way == "1" %}
+				    class="active"
+				   {% endif %}
+				 >默认 </a>
+				<a href="/list_{{tid}}_2_1/"
+				 {% if way == "2" %}
+				    class="active"
+				   {% endif %}
+				>价格</a>
+				<a href="/list_{{tid}}_3_1/"
+				 {% if way == "3" %}
+				    class="active"
+				   {% endif %}>人气</a>
+			</div>
+
+			<ul class="goods_type_list clearfix">
+				{% for i in goodslist%}
+				<li>
+					<a href="/detail_{{tid}}_{{i.id}}/"><img src="/static/{{i.gpic}}"></a>
+					<h4><a href="/detail_{{tid}}_{{i.id}}/">{{i.gtitle}}</a></h4>
+					<div class="operate">
+						<span class="prize">￥{{i.gprice}}</span>
+						<span class="unit">{{i.gprice}}/{{i.gunit}}</span>
+						<a href="/cart/add_{{i.id}}_1" class="add_goods" id="add_cart" title="加入购物车"></a>
+					</div>
+				</li>
+
+				{%endfor%}
+
+
+
+			</ul>
+
+			<div class="pagenation">
+				{% if page.has_previous %}
+				<a href="/list_{{tid}}_{{way}}_{{page.previous_page_number}}"><上一页</a>
+				{%endif%}
+				{%for i in paginator.page_range%}
+				<a href="/list_{{tid}}_{{way}}_{{i}}"
+				   {%if page.number == i%}
+					class="active"
+					{{endif}}
+				>{{i}}</a>
+				{%endif%}
+
+				{%endfor%}
+
+
+				{% if page.has_next %}
+				<a href="/list_{{tid}}_{{way}}_{{page.next_page_number}}"><下一页</a>
+				{%endif%}
+
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$.get('/cart/cart_num', function (data) {
+			$('#show_count').html(data.count)
+        })
+	</script>
+
+{%endblock body%}

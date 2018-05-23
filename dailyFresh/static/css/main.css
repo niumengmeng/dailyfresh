@@ -13,7 +13,7 @@ html,body{height:100%}
 	margin:0 auto;
 }
 
-.welcome,.login_info,.login_btn,.user_link{
+.welcome,.login_info,.login_btn,.user_link,.login_out{
 	line-height:29px;
 }
 
@@ -21,17 +21,28 @@ html,body{height:100%}
 	display:none;
 }
 
+.login_out{
+	line-height:29px;
+	color:#666;
+}
+
+
 .login_info em{color:#ff8800}
+
+.login_info a{
+	line-height:29px;
+	color:#666;
+}
 
 .login_btn a,.user_link a{
 	color:#666;
 }
 
-.login_btn a:hover,.user_link a:hover{
+.login_btn a:hover,.user_link a:hover,.login_out:hover{
 	color:#ff8800;
 }
 
-.login_btn span,.user_link span{
+.login_btn span,.user_link span,.login_info span{
 	color:#cecece;
 	margin:0 10px;
 }
