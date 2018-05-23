@@ -86,7 +86,7 @@
 
 	    {%for i in carts%}
 	    if ($('#check_{{i.id}}').prop('checked')){
-	        console.log($('#check_{{i.id}}').prop('checked'))
+
 	        var total = $('#total_{{i.id}} ').text();
 			totalPrice+=parseFloat(total);
 			count += 1;
@@ -94,7 +94,7 @@
 
 		}
 		{%endfor%}
-		console.log($('#show_counts').text())
+
 		$('#show_counts').text(count);
 		$('#total_price').text(totalPrice.toFixed(2))
 	}
@@ -149,7 +149,8 @@
 
 			if (data.ok==1){
 				total();
-
+				var count = $('#show_counts').text();
+				$('#show_count').text(count);
 			} else {
 			    $(this).val('1')
 			}
@@ -166,7 +167,6 @@
 	        var cart_id = $(this).parents('.cart_list_td').attr('id');
 			$.get('delete_'+cart_id+'/',function (data) {
 				if (data.ok==1){
-
 					$('ul').remove('#'+cart_id)
  					total();
 				}else {
