@@ -1,3 +1,4 @@
+# coding=utf-8
 from django.shortcuts import render,redirect
 from df_goods.models import GoodsInfo
 from df_user.models import userInfo
@@ -36,6 +37,7 @@ def order_handle(request):
         orderinfo.ototal = Decimal(request.POST.get('total'))
         orderinfo.odate = now
         orderinfo.save()
+
         for cart in carts:
             orderDetail = OrderDetailInfo()
             orderDetail.order = orderinfo
@@ -50,6 +52,8 @@ def order_handle(request):
                 orderDetail.count = cart.count
                 orderDetail.price = goods.gprice
                 orderDetail.save()
+
+
                 # 删除购物车数据
                 cart.delete()
             else:
@@ -58,6 +62,7 @@ def order_handle(request):
 
         transaction.savepoint_commit(tran_id)
     except Exception as e:
+        print(e)
         transaction.savepoint_rollback(tran_id)
-    context = {'orderinfo': orderinfo, 'orderDetail':orderDetail}
-    return render(request, 'df_user/user_center_order.html', context)
+
+    return redirect('/user/order/')

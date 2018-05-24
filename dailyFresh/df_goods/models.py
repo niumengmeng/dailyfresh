@@ -6,8 +6,6 @@ class TypeInfo(models.Model):
     ttitle = models.CharField(max_length=20)
     isDelete = models.BooleanField(default=False)
 
-    def __str__(self):
-        return self.ttitle.encode('utf-8')
 
 
 class GoodsInfo(models.Model):
@@ -23,7 +21,5 @@ class GoodsInfo(models.Model):
     gadv = models.BooleanField(default=False)
     gtype = models.ForeignKey(TypeInfo)
 
-    def __str__(self):
-        return self.gtitle.encode('utf-8')
 
 

@@ -1,12 +1,13 @@
 #coding=utf-8
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from .models import *
 from hashlib import sha1
-from django.http import JsonResponse,HttpResponse,HttpResponseRedirect
+from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from . import user_decorator
 #导入settings注册的Apps模块，虽然编译器报错，但不影响实际运行
-from df_goods.models import *
-
+from df_goods.models import GoodsInfo
+from df_order.models import OrderInfo, OrderDetailInfo
+from django.core.paginator import Paginator
 
 
 
@@ -114,11 +115,12 @@ def info(request):
     uid = request.session['user_id']
     user = userInfo.objects.filter(id=uid)
     goods_id = request.COOKIES.get('goods_ids', '')
-    goods_ids = goods_id.split(',')
     goodslist = []
-
-    for i in goods_ids:
-        goodslist.append(GoodsInfo.objects.get(id=int(i)))
+    if goods_id != '':
+        goods_ids = goods_id.split(',')
+        for i in goods_ids:
+            print(i)
+            goodslist.append(GoodsInfo.objects.get(id=int(i)))
 
     context = {'uname': user[0].uname, 'uphone': user[0].uphone,
                'uaddress': user[0].uaddress, 'goodslist': goodslist,
@@ -128,8 +130,17 @@ def info(request):
 
 @user_decorator.login
 def order(request):
+    uid = request.session['user_id']
+    orderInfo = OrderInfo.objects.filter(user_id=uid)
 
-    context = {}
+    detail_list = []
+    for info in orderInfo:
+        orderDetail = OrderDetailInfo.objects.filter(order_id=info.oid)
+        for i in orderDetail:
+            detail_list.append(i)
+
+    context = {'orderInfo': orderInfo, 'detail_list': detail_list}
+
     return render(request, 'df_user/user_center_order.html', context)
 
 @user_decorator.login

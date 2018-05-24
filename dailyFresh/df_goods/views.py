@@ -104,3 +104,17 @@ def list(request, tid, way, index):
                'type0': type0, 'type1': type1, 'type2': type2, 'type3': type3,
                'type4': type4, 'type5': type5, }
     return render(request, 'df_goods/list.html', context)
+
+# def detail_seach(request, gid):
+#
+#
+#     return render('')
+
+
+from haystack.views import SearchView
+class MysearchView(SearchView):
+    def extra_context(self):
+        context = super(MysearchView, self).extra_context()
+
+
+        return context

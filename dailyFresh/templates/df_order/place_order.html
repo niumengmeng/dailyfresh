@@ -115,7 +115,10 @@
 				setTimeout(function(){
 					$('.popup_con').fadeOut('fast',function(){
 
-					    $.post('/order/order_handle/',{'total':total()});
+					    $.post('/order/order_handle/',{'total':total()},function () {
+							window.location.href='/user/order/';
+                        });
+
 
 					});	
 				},3000)
