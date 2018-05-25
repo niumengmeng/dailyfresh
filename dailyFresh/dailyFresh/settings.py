@@ -26,7 +26,7 @@ SECRET_KEY = '9q#vl@))%^!oo##d1p5&q-o6)fexrh^zp90^ab0xswb3!%y7%e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*',]
 
 
 # Application definition
@@ -116,10 +116,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 #开发阶段的上传文件路径
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 
 #部署后的上传文件路径
-# MEDIA_ROOT = '/var/www/dailyfresh/static'
+MEDIA_ROOT = '/var/www/dailyfresh/static'
 
 
 TINYMCE_DEFAULT_CONFIG = {
@@ -139,3 +139,5 @@ HAYSTACK_CONNECTIONS = {
 HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 18
+STATIC_ROOT = '/var/www/dailyFresh/static/'
+STATIC_URL = '/static/'

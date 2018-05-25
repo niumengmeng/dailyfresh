@@ -42,8 +42,8 @@ def detail(request, tid, bid):
     news = typeinfo.goodsinfo_set.order_by('-id')[0:2]
 
     goods = GoodsInfo.objects.get(id=bid)
-    goods.gclick=goods.gclick+1
-    goods.save()
+    goods.gclick += 1
+    print(goods.gclick)
 
     type0 = typelist[0]
     type1 = typelist[1]
@@ -67,7 +67,7 @@ def detail(request, tid, bid):
         # 插入在最前面
         goodslist.insert(0, goods_id)
         # 如果cookie中的值大于五个 则删除cookie中最后一个
-        if len(goodslist)>=5:
+        if len(goodslist) >= 5:
             goodslist.pop()
         goods_ids = ','.join(goodslist)
         # 没有直接把当前商品添加上
@@ -105,10 +105,6 @@ def list(request, tid, way, index):
                'type4': type4, 'type5': type5, }
     return render(request, 'df_goods/list.html', context)
 
-# def detail_seach(request, gid):
-#
-#
-#     return render('')
 
 
 from haystack.views import SearchView

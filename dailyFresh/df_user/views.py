@@ -1,10 +1,10 @@
-#coding=utf-8
+# coding=utf-8
 from django.shortcuts import render, redirect
 from .models import *
 from hashlib import sha1
 from django.http import JsonResponse, HttpResponse, HttpResponseRedirect
 from . import user_decorator
-#导入settings注册的Apps模块，虽然编译器报错，但不影响实际运行
+
 from df_goods.models import GoodsInfo
 from df_order.models import OrderInfo, OrderDetailInfo
 from django.core.paginator import Paginator
@@ -57,7 +57,7 @@ def login(request):
 def login_handle(request):
     post = request.POST
     username = post.get('username')
-    pwd = post.get('pwd')
+    pwd = post.get('pwd').encode('utf-8')
     checkbox = post.get('checkbox', 0)
 
 
